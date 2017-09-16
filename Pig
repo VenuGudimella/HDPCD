@@ -1,0 +1,72 @@
+#use HCatalog
+tbl_load = LOAD 'hdpcd_test.categories' USING org.apache.hive.hcatalog.pig.HCatLoader();
+b = sample tbl_load 0.1;
+dump b;
+
+#TRANSFORM DATA IN PIG TO MATCH A GIVEN HIVE SCHEMA
+When we load table from hive using HCatalog,data transformation is taken care by default.Like,converion of STRING in hive to CHARARRAY in pig
+If we do not use HCatalog but load the table data from HDFS then data should be transformed as shown below
+
+hive (hdpcd_test)> describe formatted categories;
+OK
+# col_name              data_type               comment             
+                 
+category_id             int                                         
+category_department_id  int                                         
+category_name           string                                      
+                 
+# Detailed Table Information             
+Database:               hdpcd_test               
+Owner:                  stgvenu9                 
+CreateTime:             Sat Sep 16 00:18:28 EDT 2017     
+LastAccessTime:         UNKNOWN                  
+Protect Mode:           None                     
+Retention:              0                        
+Location:               hdfs://nn01.itversity.com:8020/apps/hive/warehouse/hdpcd_test.db/categories      
+Table Type:             MANAGED_TABLE            
+Table Parameters:                
+        comment                 Imported by sqoop on 2017/09/16 00:18:21
+        numFiles                4                   
+        numRows                 0                   
+        rawDataSize             0                   
+        totalSize               781                 
+        transient_lastDdlTime   1505535556          
+                 
+# Storage Information            
+SerDe Library:          org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe       
+InputFormat:            org.apache.hadoop.mapred.TextInputFormat         
+OutputFormat:           org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat       
+Compressed:             No                       
+Num Buckets:            -1                       
+Bucket Columns:         []                       
+Sort Columns:           []                       
+Storage Desc Params:             
+        field.delim             \u0001              
+        line.delim              \n                  
+        serialization.format    \u0001    
+        
+tbl_load = LOAD 'hdfs://nn01.itversity.com:8020/apps/hive/warehouse/hdpcd_test.db/categories' USING PigStorage('') AS (category_id:int,category_department_id:int,category_name:chararray)
+illustrate tbl_load;
+
+--------------------------------------------------------------------------------------------------
+| tbl_load     | category_id:int    | category_department_id:int    | category_name:chararray    | 
+--------------------------------------------------------------------------------------------------
+|              | 41                 | 6                             | Trade-In                   | 
+--------------------------------------------------------------------------------------------------
+
+#REMOVE NULL VALUES
+tbl_load = LOAD 'hdpcd_test.categories' USING org.apache.hive.hcatalog.pig.HCatLoader();
+tbl_fltr = FILTER tbl_load BY category_id IS NOT NULL;
+
+#STORE OUTPUT INTO A FILE IN HDFS
+tbl_load = LOAD 'hdpcd_test.categories' USING org.apache.hive.hcatalog.pig.HCatLoader();
+tbl_fltr = FILTER tbl_load BY category_id IS NOT NULL;
+tbl_str = STORE tbl_fltr INTO '/user/stgvenu9/myoutputs';
+
+tbl_load = LOAD 'hdpcd_test.categories' USING org.apache.hive.hcatalog.pig.HCatLoader();
+tbl_fltr = FILTER tbl_load BY category_id IS NOT NULL;
+tbl_str = STORE tbl_fltr INTO '/user/stgvenu9/myoutputs' using PigStorage('');
+--store into hive
+tbl_load = LOAD 'hdpcd_test.categories' USING org.apache.hive.hcatalog.pig.HCatLoader();
+tbl_fltr = FILTER tbl_load BY category_id == 58;
+tbl_str = STORE tbl_fltr INTO 'hdpcd_test.categories_frompig' USING org.apache.hive.hcatalog.pig.HCatStorer();
