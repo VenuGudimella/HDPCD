@@ -9,3 +9,13 @@ sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username reta
 sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity  -e 'select * from categories WHERE $CONDITIONS LIMIT 10'  --target-dir /user/stgvenu9/sqoop -m 1 --delete-target-dir;
 
 #IMPORT A TABLE FROM RDB TO HIVE
+sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity --table categories --hive-import --hive-database hdpcd_test;
+
+#INCREMENTAL import
+Option#1 : 
+sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity --table categories --hive-import --hive-database hdpcd_test --hive-overwrite --hive-import --where "category_id < 15";
+sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity --table categories --hive-import --hive-database hdpcd_test --hive-overwrite --hive-import --where "category_id >= 15";
+Option#2 :
+sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity --table categories --hive-import --hive-database hdpcd_test --hive-overwrite --hive-import --where "category_id < 15";
+sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity --table categories --hive-import --hive-database hdpcd_test --hi
+ve-overwrite --hive-import --check-column category_id --incremental append --last-value 14;          
