@@ -1,0 +1,11 @@
+#EVAL
+sqoop eval --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity -e 'describe categories';
+sqoop eval --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity -e 'select * from categories limit 2';
+
+#IMPORT 
+sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity --table categories  --columns category_id --where "category_id =2" --target-dir /user/stgvenu9/sqoop -m 1 --delete-target-dir;
+
+#TO STORE RESULTS OF A QUERY IN HDFS
+sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity  -e 'select * from categories WHERE $CONDITIONS LIMIT 10'  --target-dir /user/stgvenu9/sqoop -m 1 --delete-target-dir;
+
+#IMPORT A TABLE FROM RDB TO HIVE
