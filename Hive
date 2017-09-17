@@ -1,0 +1,40 @@
+#HIVE PARTITIONED
+
+  CREATE TABLE `categories_partitioned`(
+                 >               `category_id` int, 
+                 >                `category_name` string)
+                 >                PARTITIONED BY (`category_department_id` int)
+                 >                ROW FORMAT DELIMITED
+                 >                FIELDS TERMINATED BY '\u0001' 
+                 >                  LINES TERMINATED BY '\n' ;
+                 
+AlTER table categories_partitioned ADD partition (category_department_id=8);
+
+INSERT INTO table categories_partitioned partition (category_department_id=8)
+                 > SELECT category_id,category_name from categories where category_department_id=8;
+                 
+58      NFL Players     8
+58      NFL Players     8
+49      MLB     8
+50      NFL     8
+51      NHL     8
+52      NBA     8
+53      NCAA    8
+54      MLS     8
+55      International Soccer    8
+56      World Cup Shop  8
+57      MLB Players     8
+58      NFL Players     8
+               
+#HIVE BUCKETING
+CREATE TABLE `categories_buck`(
+                   `category_id` int, 
+                   `category_name` string)
+                    PARTITIONED BY ( 
+                   `category_department_id` int)
+                    CLUSTERED BY (category_id) INTO 2 buckets
+                  ROW FORMAT DELIMITED 
+                   FIELDS TERMINATED BY '\u0001' 
+                  LINES TERMINATED BY '\n';
+                  
+INSERT into categories_buck partition (category_department_id=8) values (59,"IPL");
