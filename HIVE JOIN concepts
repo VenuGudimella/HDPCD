@@ -1,4 +1,4 @@
-#UNDERSTANDING JOIN CONCEPTS
+#UNDERSTANDING JOIN CONCEPTS in HIVE
 
 hive (hdpcd_test)> select * from students;
 OK
