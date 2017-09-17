@@ -38,3 +38,63 @@ CREATE TABLE `categories_buck`(
                   LINES TERMINATED BY '\n';
                   
 INSERT into categories_buck partition (category_department_id=8) values (59,"IPL");
+
+#UNDERSTANDING JOIN CONCEPTS
+
+hive (hdpcd_test)> select * from students;
+OK
+7       sandeep
+8       venkatesh
+9       thala
+1       venu
+2       gopal
+3       sudhi
+4       seetha
+5       sreenath
+6       sekhar
+
+hive (hdpcd_test)> select * from library;
+OK
+1       telugu
+1       physics
+2       social
+3       english
+4       mathematics
+5       science
+6       mechanical engineering
+
+--select * from students s LEFT OUTER JOIN  library l on s.id = l.id;
+7       sandeep NULL    NULL
+8       venkatesh       NULL    NULL
+9       thala   NULL    NULL
+1       venu    1       telugu
+1       venu    1       physics
+2       gopal   2       social
+3       sudhi   3       english
+4       seetha  4       mathematics
+5       sreenath        5       science
+6       sekhar  6       mechanical engineering
+
+--select s.*,l.bookname from students s LEFT OUTER JOIN  library l on s.id = l.id ORDER BY s.id desc;
+9       thala   NULL
+8       venkatesh       NULL
+7       sandeep NULL
+6       sekhar  mechanical engineering
+5       sreenath        science
+4       seetha  mathematics
+3       sudhi   english
+2       gopal   social
+1       venu    telugu
+1       venu    physics
+
+
+--select s.*,l.bookname from students s INNER JOIN  library l on s.id = l.id;
+Notice that above query results only common rows(intersection basically)
+
+1       venu    telugu
+1       venu    physics
+2       gopal   social
+3       sudhi   english
+4       seetha  mathematics
+5       sreenath        science
+6       sekhar  mechanical engineering
