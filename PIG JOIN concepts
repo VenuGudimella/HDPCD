@@ -1,0 +1,100 @@
+students = LOAD 'hdpcd_test.students' USING org.apache.hive.hcatalog.pig.HCatLoader();
+library = LOAD 'hdpcd_test.library' using org.apache.hive.hcatalog.pig.HCatLoader();
+tbljoin = JOIN students by id,library by id;
+dump tbljoin;
+
+(1,venu,1,physics)
+(1,venu,1,telugu)
+(2,gopal,2,social)
+(3,sudhi,3,english)
+(4,seetha,4,mathematics)
+(5,sreenath,5,science)
+(6,sekhar,6,mechanical engineering)
+
+The result is inersection of two relations students,library.
+
+#Transforming data
+
+students = LOAD 'hdpcd_test.students' USING org.apache.hive.hcatalog.pig.HCatLoader();
+library = LOAD 'hdpcd_test.library' using org.apache.hive.hcatalog.pig.HCatLoader();
+tbljoin = JOIN students by id,library by id
+tbljoin_tr = FOREACH tbljoin GENERATE students::id,students::name,library::bookname;
+dump tbljoin_tr;
+
+(1,venu,physics)
+(1,venu,telugu)
+(2,gopal,social)
+(3,sudhi,english)
+(4,seetha,mathematics)
+(5,sreenath,science)
+(6,sekhar,mechanical engineering)
+
+students = LOAD 'hdpcd_test.students' USING org.apache.hive.hcatalog.pig.HCatLoader();
+library = LOAD 'hdpcd_test.library' using org.apache.hive.hcatalog.pig.HCatLoader();
+tbljoin = JOIN students by id LEFT OUTER,library by id;
+tbljoin_tr = FOREACH tbljoin GENERATE students::id,students::name,library::bookname;
+dump tbljoin_tr;
+
+(1,venu,physics)
+(1,venu,telugu)
+(2,gopal,social)
+(3,sudhi,english)
+(4,seetha,mathematics)
+(5,sreenath,science)
+(6,sekhar,mechanical engineering)
+(7,sandeep,)
+(8,venkatesh,)
+(9,thala,)
+
+students = LOAD 'hdpcd_test.students' USING org.apache.hive.hcatalog.pig.HCatLoader();
+library = LOAD 'hdpcd_test.library' using org.apache.hive.hcatalog.pig.HCatLoader();
+tbljoin = JOIN students by id RIGHT OUTER,library by id;
+tbljoin_tr = FOREACH tbljoin GENERATE students::id,students::name,library::bookname;
+dump tbljoin_tr;
+
+(1,venu,physics)
+(1,venu,telugu)
+(2,gopal,social)
+(3,sudhi,english)
+(4,seetha,mathematics)
+(5,sreenath,science)
+(6,sekhar,mechanical engineering)
+(,,enginerring drawing)
+
+students = LOAD 'hdpcd_test.students' USING org.apache.hive.hcatalog.pig.HCatLoader();
+library = LOAD 'hdpcd_test.library' using org.apache.hive.hcatalog.pig.HCatLoader();
+tbljoin = JOIN students by id FULL OUTER,library by id;
+tbljoin_tr = FOREACH tbljoin GENERATE students::id,students::name,library::bookname;
+dump tbljoin_tr;
+
+(1,venu,physics)
+(1,venu,telugu)
+(2,gopal,social)
+(3,sudhi,english)
+(4,seetha,mathematics)
+(5,sreenath,science)
+(6,sekhar,mechanical engineering)
+(7,sandeep,)
+(8,venkatesh,)
+(9,thala,)
+(,,enginerring drawing)
+
+# using replicated
+students = LOAD 'hdpcd_test.students' USING org.apache.hive.hcatalog.pig.HCatLoader();
+library = LOAD 'hdpcd_test.library' using org.apache.hive.hcatalog.pig.HCatLoader();
+tbljoin = JOIN students by id LEFT OUTER,library by id using 'replicated';
+tbljoin_tr = FOREACH tbljoin GENERATE students::id,students::name,library::bookname;
+dump tbljoin_tr;
+
+(8,venkatesh,)
+(9,thala,)
+(7,sandeep,)
+(1,venu,telugu)
+(1,venu,physics)
+(2,gopal,social)
+(3,sudhi,english)
+(4,seetha,mathematics)
+(5,sreenath,science)
+(6,sekhar,mechanical engineering)
+
+ 
