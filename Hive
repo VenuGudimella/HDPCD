@@ -56,6 +56,7 @@ OK
 hive (hdpcd_test)> select * from library;
 OK
 1       telugu
+15      enginerring drawing
 1       physics
 2       social
 3       english
@@ -76,6 +77,7 @@ OK
 6       sekhar  6       mechanical engineering
 
 --select s.*,l.bookname from students s LEFT OUTER JOIN  library l on s.id = l.id ORDER BY s.id desc;
+Notice that above query results in all rows from students(left side table) will NULL values on right table library if match is not found
 9       thala   NULL
 8       venkatesh       NULL
 7       sandeep NULL
@@ -98,3 +100,15 @@ Notice that above query results only common rows(intersection basically)
 4       seetha  mathematics
 5       sreenath        science
 6       sekhar  mechanical engineering
+
+--select s.*,l.bookname from students s RIGHT OUTER JOIN library l on s.id = l.id;
+Notice that above query results in all rows from library(right side table) will NULL values on left table students if match is not found
+1       venu    telugu
+NULL    NULL    enginerring drawing
+1       venu    physics
+2       gopal   social
+3       sudhi   english
+4       seetha  mathematics
+5       sreenath        science
+6       sekhar  mechanical engineering
+
