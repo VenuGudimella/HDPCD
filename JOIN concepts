@@ -70,3 +70,28 @@ NULL    NULL    enginerring drawing
 4       seetha  mathematics
 5       sreenath        science
 6       sekhar  mechanical engineering
+
+--select s.*,l.bookname from students s FULL OUTER JOIN library l on s.id = l.id;
+Notice that the above query results in all rows from both tables
+
+1       venu    telugu
+1       venu    physics
+2       gopal   social
+3       sudhi   english
+4       seetha  mathematics
+5       sreenath        science
+6       sekhar  mechanical engineering
+7       sandeep NULL
+8       venkatesh       NULL
+9       thala   NULL
+NULL    NULL    enginerring drawing
+
+-- select s.*,l.bookname from students s JOIN library l on s.id = l.id;
+It resulted in common rows just like INNER JOIN
+1       venu    telugu
+1       venu    physics
+2       gopal   social
+3       sudhi   english
+4       seetha  mathematics
+5       sreenath        science
+6       sekhar  mechanical engineering
