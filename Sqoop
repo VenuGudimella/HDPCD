@@ -18,4 +18,32 @@ sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username reta
 Option#2 :
 sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity --table categories --hive-import --hive-database hdpcd_test --hive-overwrite --hive-import --where "category_id < 15";
 sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity --table categories --hive-import --hive-database hdpcd_test --hi
-ve-overwrite --hive-import --check-column category_id --incremental append --last-value 14;          
+ve-overwrite --hive-import --check-column category_id --incremental append --last-value 14;   
+
+very very important
+#When we use CREATE-HIVE-TABLE data and structure from RDB is imported to HDFS but table will not be cretaed in HIVE
+
+sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity --table products --create-hive-table --hive-import --hive-database hdpcd_test;
+
+hadoop fs -ls hdfs://nn01.itversity.com:8020/user/stgvenu9/products;
+Found 5 items
+-rw-r--r--   3 stgvenu9 hdfs          0 2017-09-17 13:46 hdfs://nn01.itversity.com:8020/user/stgvenu9/products/_SUCCESS
+-rw-r--r--   3 stgvenu9 hdfs      41419 2017-09-17 13:46 hdfs://nn01.itversity.com:8020/user/stgvenu9/products/part-m-00000
+-rw-r--r--   3 stgvenu9 hdfs      43660 2017-09-17 13:46 hdfs://nn01.itversity.com:8020/user/stgvenu9/products/part-m-00001
+-rw-r--r--   3 stgvenu9 hdfs      42195 2017-09-17 13:46 hdfs://nn01.itversity.com:8020/user/stgvenu9/products/part-m-00002
+-rw-r--r--   3 stgvenu9 hdfs      46719 2017-09-17 13:46 hdfs://nn01.itversity.com:8020/user/stgvenu9/products/part-m-00003
+
+sqoop import --connect jdbc:mysql://nn01.itversity.com/retail_db --username retail_dba --password itversity --table products  --hive-import --hive-database hdpcd_test --delete-target-dir;
+
+Earlier HDFS path will be deleted and table will be imported to HIVE
+
+dfs -ls hdfs://nn01.itversity.com:8020/apps/hive/warehouse/hdpcd_test.db;
+Found 8 items
+drwxrwxrwx   - stgvenu9 hdfs          0 2017-09-16 18:31 hdfs://nn01.itversity.com:8020/apps/hive/warehouse/hdpcd_test.db/categories
+drwxrwxrwx   - stgvenu9 hdfs          0 2017-09-16 19:50 hdfs://nn01.itversity.com:8020/apps/hive/warehouse/hdpcd_test.db/categories_buck
+drwxrwxrwx   - stgvenu9 hdfs          0 2017-09-16 01:19 hdfs://nn01.itversity.com:8020/apps/hive/warehouse/hdpcd_test.db/categories_frompig
+drwxrwxrwx   - stgvenu9 hdfs          0 2017-09-16 19:33 hdfs://nn01.itversity.com:8020/apps/hive/warehouse/hdpcd_test.db/categories_partitioned
+drwxrwxrwx   - stgvenu9 hdfs          0 2017-09-17 13:17 hdfs://nn01.itversity.com:8020/apps/hive/warehouse/hdpcd_test.db/library
+drwxrwxrwx   - stgvenu9 hdfs          0 2017-09-16 18:54 hdfs://nn01.itversity.com:8020/apps/hive/warehouse/hdpcd_test.db/orders
+drwxrwxrwx   - stgvenu9 hdfs          0 2017-09-17 13:55 hdfs://nn01.itversity.com:8020/apps/hive/warehouse/hdpcd_test.db/products
+drwxrwxrwx   - stgvenu9 hdfs          0 2017-09-17 13:03 hdfs://nn01.itversity.com:8020/apps/hive/warehouse/hdpcd_test.db/students
