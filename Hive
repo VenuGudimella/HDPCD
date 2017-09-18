@@ -112,3 +112,22 @@ NULL    NULL    enginerring drawing
 5       sreenath        science
 6       sekhar  mechanical engineering
 
+#INSERT,DELETE,UPDATE ON HIVE
+There are limitation for these operations
+The table has to be BUCKETED,should be ORC format,certain configurations are to be set
+like
+hive.txn.manager to Dbtransaction manager
+hive.support.concurrency to true
+
+CREATE TABLE transactions(
+i int,
+j string)
+CLUSTERED BY (i) INTO 4 BUCKETS
+STORED AS ORC
+tblproperties ('transactional'='true');
+
+INSERT into TABLE transactions values (1,"hdpcd"),(2,"cloudera");
+delete from transactions where i =2;
+
+update transactions set j = "cloudera" where i = 1; /Remember we cannot update bucketed column
+INSERT into TABLE transactions values (1,"hdpcd"),(2,"cloudera");
