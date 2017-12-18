@@ -1,0 +1,20 @@
+ [stgvenu9@gw01 ~]$ hadoop fs -cat /user/stgvenu9/json_files/sample.json
+{ "name":"John", "age":31, "city":"New York" };
+ 
+ HIVE:
+  
+CREATE EXTERNAL TABLE FIRST_JSON ( 
+name STRING,
+age   INT,
+city  STRING )
+ROW FORMAT SERDE 'org.apache.hive.hcatalog.data.JsonSerDe'
+STORED AS TEXTFILE
+location '/user/stgvenu9/json_files';
+
+hive (hdpcd_test)> SELECT * FROM first_json;
+OK
+John    31      New York
+
+
+Pig:
+
