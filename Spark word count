@@ -35,3 +35,7 @@ gopal   1
 varada  1
 venu gopal      1
 tirumala        1
+
+This also will work
+
+c.map(rec => rec.productIterator.mkString("\t")).collect().foreach(println)
