@@ -1,0 +1,37 @@
+Word count :
+val newfile = sc.textFile("/user/stgvenu9/json_files/learn.txt")
+val a = newfile.flatMap(rec => rec.split(","))
+val b = a.map(rec => (rec,1))
+val c = b.reduceByKey((agg,value) => agg + value)
+val d = c.collect().foreach(println)
+
+(srimath,1)
+(this,1)
+(is,1)
+(Hello,1)
+(gudimella,1)
+(,1)
+(venu,1)
+(hi,1)
+(gopal,1)
+(varada,1)
+(venu gopal,1)
+(tirumala,1)
+d: Unit = ()
+
+If output needs formatting then
+
+c.map(rec => rec._1 + "\t" + rec._2).collect().foreach(println)
+
+srimath 1
+this    1
+is      1
+Hello   1
+gudimella       1
+        1
+venu    1
+hi      1
+gopal   1
+varada  1
+venu gopal      1
+tirumala        1
