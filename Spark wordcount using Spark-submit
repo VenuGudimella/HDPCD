@@ -1,0 +1,64 @@
+Step1: Create a folder to store the sbt file
+/home/stgvenu9/scalacode/wordcount
+
+Step2: Create a folder to store application code 
+/home/stgvenu9/scalacode/wordcount/src/main/scala
+
+Step3: Write source code 
+Create WordCount.scala in /home/stgvenu9/scalacode/wordcount/src/main/scala
+
+package wordcount
+import org.apache.spark.SparkConf,org.apache.spark.SparkContext,org.apache.spark.SparkContext._
+object WordCount {
+def main(args: Array[String]) {
+val conf = new SparkConf().
+setAppName("word count").
+setMaster("local")
+val sc = new SparkContext(conf)
+val inputpath = "hdfs://nn01.itversity.com:8020/user/stgvenu9/json_files/learn.txt"
+val outputpath = "hdfs://nn01.itversity.com:8020/user/stgvenu9/spark_output"
+val wc = sc.textFile(inputpath).
+flatMap(rec => rec.split(",")).
+map(rec => (rec,1)).
+reduceByKey((acc,value) => acc + value)
+wc.saveAsTextFile(outputpath)
+}}
+
+Step4: create build.sbt file
+Create build.sbt in /home/stgvenu9/scalacode/wordcount
+
+name := "wordcount"
+version := "1.0"
+scalaVersion := "2.10.6"
+
+libraryDependencies += "org.apache.spark" %% "spark-core" % "1.6.3"
+
+Step5: Validate the build.sbt 
+Run sbt or sbt console command to validate the build fi;e
+
+Step6:
+CD to /home/stgvenu9/scalacode/wordcount where build.sbt is present.
+Run the command sbt package
+
+[stgvenu9@gw01 wordcount]$ sbt package
+[info] Set current project to wordcount (in build file:/home/stgvenu9/scalacode/wordcount/)
+[info] Packaging /home/stgvenu9/scalacode/wordcount/target/scala-2.10/wordcount_2.10-1.0.jar ...
+[info] Done packaging.
+[success] Total time: 2 s, completed Jan 10, 2018 2:13:28 PM
+
+Step7: Run the jar file
+
+Option1: Use run sbt
+Option2: [stgvenu9@gw01 ~]$ spark-submit --class "wordcount.WordCount" \
+--master yarn \
+--executor-memory 512m \
+--total-executor-cores 1 \
+/home/stgvenu9/scalacode/wordcount/target/scala-2.10/wordcount_2.10-1.0.jar;
+
+Note:
+Here class is packagename.classname
+Spark-submit should be used outside scala
+
+
+
+ 
