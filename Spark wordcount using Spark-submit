@@ -1,8 +1,10 @@
 Step1: Create a folder to store the sbt file
-/home/stgvenu9/scalacode/wordcount
+/home/stgvenu9/scalacode/wordcount ----> This is your package
 
 Step2: Create a folder to store application code 
-/home/stgvenu9/scalacode/wordcount/src/main/scala
+/home/stgvenu9/scalacode/wordcount/src/main/scala ----> source codes location
+
+We can write any number of application code with in a package
 
 Step3: Write source code 
 Create WordCount.scala in /home/stgvenu9/scalacode/wordcount/src/main/scala
