@@ -50,7 +50,7 @@ Run the command sbt package
 
 Step7: Run the jar file
 
-Option1: Use run sbt
+Option1: Use sbt run
 Option2: [stgvenu9@gw01 ~]$ spark-submit --class "wordcount.WordCount" \
 --master yarn \
 --executor-memory 512m \
