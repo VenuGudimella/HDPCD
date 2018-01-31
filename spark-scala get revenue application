@@ -1,0 +1,33 @@
+package wordcount
+import org.apache.spark.SparkConf
+import org.apache.spark.SparkContext
+import org.apache.spark.SparkContext._
+object GetRevenue {
+def main(args: Array[String]) {
+val conf = new SparkConf().
+setAppName("get avg rev").
+setMaster("local")
+val sc = new SparkContext(conf)
+val url = "hdfs://nn01.itversity.com:8020/user/stgvenu9/mysql_tables"
+val outputpath = "hdfs://nn01.itversity.com:8020/user/stgvenu9/spark"
+val ordersRDD = sc.textFile(url + "/orders")
+val orderitemsRDD = sc.textFile(url + "/order_items")
+val ordersRDDcompleted = ordersRDD.filter(rec => rec.split(',')(3).equals("COMPLETE"))
+val ordersRDDtr1 = ordersRDDcompleted.map(rec => (rec.split(',')(0).toInt,rec.split(',')(1)))
+val orderitemsRDDtr1 = orderitemsRDD.map(rec => (rec.split(',')(1).toInt,rec.split(',')(4).toFloat))
+val orderitems = orderitemsRDDtr1.reduceByKey((acc,value) => acc + value)
+val ordersjoin = ordersRDDtr1.join(orderitems)
+val ordersJoinMap = ordersjoin.map(rec => (rec._2._1,rec._2._2))
+val revenuePerDay = ordersJoinMap.aggregateByKey((0.0,0)) (
+(acc,value) => (acc._1 + value,acc._2 + 1),
+ (total1,total2) => (total1._1 + total2._1,total1._2 + total2._2))
+val avgrevenue = revenuePerDay.map(rec => (rec._1,rec._2._1/rec._2._2))
+val avgrevenue_srtd = avgrevenue.sortByKey(ascending = true)
+avgrevenue_srtd.saveAsTextFile(outputpath)
+}}
+
+spark-submit --class "wordcount.GetRevenue" \
+--master yarn \
+--executor-memory 512m \
+--total-executor-cores 1 \
+/home/stgvenu9/scalacode/wordcount/target/scala-2.10/wordcount_2.10-1.0.jar;
