@@ -1,0 +1,34 @@
+Problem: Display a counter to show no of times filter is invoked and no of filtered records
+
+package wordcount
+import org.apache.spark.SparkConf
+import org.apache.spark.SparkContext
+import org.apache.spark.SparkContext._
+object GetRevenue {
+def main(args: Array[String]) {
+val conf = new SparkConf().
+setAppName("get avg rev").
+setMaster("local")
+val sc = new SparkContext(conf)
+val url = "hdfs://nn01.itversity.com:8020/user/stgvenu9/mysql_tables"
+val outputpath = "hdfs://nn01.itversity.com:8020/user/stgvenu9/spark"
+val ordersRDD = sc.textFile(url + "/orders")
+val orderitemsRDD = sc.textFile(url + "/order_items")
+
+val ordersFilterInvokedAccum = sc.accumulator(0,"orders filter invoked count")
+val ordersCompletedAccum = sc.accumulator(0,"orders completed count")
+val ordersRDDcompleted = ordersRDD.filter(rec => { 
+ordersFilterInvokedAccum += 1
+if ( rec.split(',')(3).equals("COMPLETE"))
+( ordersCompletedAccum  += 1)
+rec.split(',')(3).equals("COMPLETE")
+})
+
+
+
+
+scala> println("ordersCompletedAccum:" + ordersCompletedAccum)
+ordersCompletedAccum:22899
+
+scala> println("ordersFilterInvokedAccum:" + ordersFilterInvokedAccum)
+ordersFilterInvokedAccum:68915
