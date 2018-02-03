@@ -1,0 +1,3 @@
+val df = sqlContext.sql(“select order_id, order_status from retail_db.orders”) - This will create dataframe.
+val rddMap = df.map(rec => (rec(0) + “\t” + rec(1))) - This will convert DF to RDD with tab delimited output.
+rddMap.saveAsTextFile(“output location”)
