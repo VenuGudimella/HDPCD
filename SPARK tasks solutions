@@ -1,0 +1,14 @@
+Task:
+
+Count the occurence the word 'are' in the given file
+
+
+val newfile = sc.textFile("/user/stgvenu9/json_files/wc.txt")
+val a = newfile.flatMap(rec => rec.split(" "))
+val b = a.map(rec => (rec,1))
+val areWc = sc.accumulator(0,"'are' count")
+val c = b.filter(rec => { 
+if (rec._1 == "are")
+(areWc += 1)
+rec._1 == "are"
+})
