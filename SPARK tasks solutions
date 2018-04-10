@@ -1,4 +1,11 @@
-Task:
+1st task is to extract the data from csv files from hdfs, apply filters and ordering with specified columns.
+
+2nd task is similar as 1st but to retrieve the data from json.
+
+3rd and 4th tasks are on querying the hive tables, apply aggregate functionalities, conditions and ordering.
+
+
+5th task is to use accumulator to perform word count.
 
 Count the occurence the word 'are' in the given file
 
@@ -29,3 +36,12 @@ if ( rec.split(',')(3).equals("COMPLETE"))
 ( ordersCompletedAccum  += 1)
 rec.split(',')(3).equals("COMPLETE")
 })
+
+
+6th task is to submit a spark job on yarn.
+
+7th task is to extract 2 data-sets which contains common column. Apply filters and join the data-sets to generate the required output.
+
+
+
+
