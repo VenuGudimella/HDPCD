@@ -1,0 +1,42 @@
+res = 0
+>>> i = 1
+>>> while(i <= 100):
+...   res += i
+...   i   += 1
+..
+
+
+>>> def sum(lb, ub):
+...   toatl = 0
+...   while(lb <= ub):
+...     toatl += lb
+...     lb += 1
+...   return toatl
+...
+>>> sum(1,2)
+3
+
+
+>>> def sum(func,lb, ub):
+...   total = 0
+...   while(lb <= ub):
+...     total += func(lb)
+...     lb += 1
+...   return total
+...
+>>> def id(i):
+...   retrun i
+  File "<stdin>", line 2
+    retrun i
+           ^
+SyntaxError: invalid syntax
+>>> def id(i):
+...   return i
+...
+>>> def sqr(i):
+...   return i * i
+...
+>>> sum(sqr,1, 2)
+5
+>>> sum(sqr,1, 3)
+14
