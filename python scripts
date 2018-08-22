@@ -5,6 +5,7 @@ res = 0
 ...   i   += 1
 ..
 
+function:
 
 >>> def sum(lb, ub):
 ...   toatl = 0
@@ -16,6 +17,7 @@ res = 0
 >>> sum(1,2)
 3
 
+ 
 
 >>> def sum(func,lb, ub):
 ...   total = 0
@@ -40,3 +42,8 @@ SyntaxError: invalid syntax
 5
 >>> sum(sqr,1, 3)
 14
+
+
+LAMBDA function:
+>>> sum(lambda i:i*2, 1, 10)
+110
