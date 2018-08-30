@@ -1,0 +1,5 @@
+>>> orderItemsFile = open("/data/retail_db/order_items/part-00000","r")
+>>> orderItemsRead = orderItemsFile.read()
+>>> orderItems     = orderItemsRead.splitlines()
+>>> orderItemsRevenue = reduce(lambda total, element: total + element, orderItemsMap)
+>>> orderItemsRevenu
