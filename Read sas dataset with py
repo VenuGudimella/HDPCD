@@ -1,0 +1,6 @@
+import pandas as pd
+#import data
+data = pd.read_sas("test.sas7bdat ")
+
+ 
+
